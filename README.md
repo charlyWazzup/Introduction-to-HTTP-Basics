@@ -124,4 +124,10 @@ Aunque para el TCP el puerto 80 esta preasignado a HTTP como puerto por default,
 Las especificaciónes del HTTP son ofrecidas por la W3C (World-wide Web Consortium). Existen dos versiones de HTTP actualmente, nombradas HTTP/1.0 y HTTP/1.1. La versión original, la HTTP/0.9 (1991), escrita por Tim Berners-Lee, es un protocolo simple para transferir datos brutos a través de Internet. El HTTP/1.0 (1996) permitía los mensajes MIME. El HTTP/1.0 no direcciona los problemas de los proxies, host virtuales, conección persistente y descarga de rango. Esto fue implementado en el HTTP/1.1 (1999).
 
 
+## Servidor HTTP Apache o Servidor Tomcat Apache
+
+Un servidor HTTP es necesario para estudiar el protocolo HTTP. El servidor Apache HTTP es popular en los servidores de producción de las industrias, producido por la Apache Software Foundation (ASF). ASF es una fundación de software open-source. El servidor Apache HTTP es gratuito con código fuente.
+
+El primer servidor HTTP fué escrito por Tim Berners Lee en el CERN (European Center for Nuclear Reserach), que a su vez invento el HTML. Apache fue creado en la NCSA (National Center for Supercomputing Application). Probablemente Apache tomo su nombre de que consiste de código original más algunos parches, o por el nombre de las tribus Nativas Americanas.
+
 
