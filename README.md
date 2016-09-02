@@ -65,4 +65,42 @@ Otros ejemplos de URL son:
 	news:soc.culture.Singpore
 	telnet://nowhere123.com/
 
+## Protocolo HTTP
+
+Como hemos mencionado, ingresamos una URL en la caja de direcciones del navegador. El navegador traduce la URL en un mensaje de petición de acuerdo al protocolo especificado y envia el mensaje de petición al servidor.
+
+Por ejemplo, el navegador traduce la URL http:://nowhere123.com/doc/index.html en el siguiente mensaje de petición:
+
+	GET /docs/index.html HTTP/1.1
+	Host: www.nowhere123.com
+	Accept: image/gif, image/jpeg, */*
+	Accept-Languaje: en-us
+	Accept-Encoding: gzip, deflate
+	User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+	(blank line)
+
+Cuando este mensaje de petición alcanza el servidor, este puede realizar una de las siguientes acciones:
+
+1. El servidor interpreta la petición recivida, mapea la petición en un _archivo_ debajo de el directorio de documentos del servidor y regresa el archivo pedido al cliente.
+2. El servidor interpreta la petición recivida, mapea la petición en un _programa_ almacenado en el servidor, ejecuta el programa y regresa la salida del programa al cliente.
+3. Si la petición no puede ser resuelta, el servidor regresa un mensaje de error.
+
+Un ejemplo de mensaje de respuesta HTTP seria:
+
+	**HTTP/1.1 200 OK**
+	Date: Sun, 18 Oct 2009 08:56:53 GMT
+	Server: Apache/2.2.14 (Win32)
+	Last-Modified: Sat, 20 Nov 2004 07:16:26 GMT
+	ETag: "10000000565a5-2c-3e94b66c2e680"
+	Accept-Length: 44
+	Connection: Close
+	**Content-Type: text/html**
+	X-Pad: avoid browser bug
+
+	**<html><body><h1>It works!</h1></body></html>**
+
+El navegador recive el mensaje de respuesta, interpreta el mensaje y muestra el contenido del mensaje en la ventana del navegador de acuerdo al tipo de contenido de la respuesta (como en _Content-Type_ respuesta de cabecera). El tipo de contenido mas común incluye "text/plain", "text/html", "image/jgep", "audio/mpeg", "video/mpeg", "application/msword" y "application/pdf".
+
+En su estado vacio, un servidor HTTP no hace nada mas que esperar la dirección IP y el puerto especificado en la configuración de la petición entrante. Cuando una petición llega, el servidor analiza el mensaje de cabecera, aplica las reglas especificas de la configuración y toma acciones apropiadas. El control principal del Webmaster sobre el servidor web es mediante la configuración, la cual dera tratada con mas detalles en las siguientes secciones.
+
 
