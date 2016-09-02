@@ -118,3 +118,10 @@ El TCP es un protocolo de transferencia de capas, responsable de establecer una 
 Para cada IP, el TCP soporta hasta 65536 puertos, de el numero 0 al 65535. Una aplicación, como HTTP o FTP corre en un puerto particular de solicitudes entrantes. Del puerto 0 al 1023 son pre-asignados a protocolos populares, por ejemplo el HTTP al 80, el FTP al 21, Telnet al 23, etc.
 
 Aunque para el TCP el puerto 80 esta preasignado a HTTP como puerto por default, no esta prohibido correr un servidor HTTP en otro puerto no asignado, especialmente para testear el servidor. También se pueden correr múltiples servidores HTTP en la misma maquina con diferentes números de puerto. Cuando un cliente solicita una URL sin un número de puerto especifico, el navegador  conectara al puerto por default, el 80.
+
+## Especificaciónes del HTTP
+
+Las especificaciónes del HTTP son ofrecidas por la W3C (World-wide Web Consortium). Existen dos versiones de HTTP actualmente, nombradas HTTP/1.0 y HTTP/1.1. La versión original, la HTTP/0.9 (1991), escrita por Tim Berners-Lee, es un protocolo simple para transferir datos brutos a través de Internet. El HTTP/1.0 (1996) permitía los mensajes MIME. El HTTP/1.0 no direcciona los problemas de los proxies, host virtuales, conección persistente y descarga de rango. Esto fue implementado en el HTTP/1.1 (1999).
+
+
+
