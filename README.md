@@ -130,4 +130,102 @@ Un servidor HTTP es necesario para estudiar el protocolo HTTP. El servidor Apach
 
 El primer servidor HTTP fué escrito por Tim Berners Lee en el CERN (European Center for Nuclear Reserach), que a su vez invento el HTML. Apache fue creado en la NCSA (National Center for Supercomputing Application). Probablemente Apache tomo su nombre de que consiste de código original más algunos parches, o por el nombre de las tribus Nativas Americanas.
 
+## Mensajes de petición y respuesta en HTTP
+
+Tanto el cliente como el servidor HTTP se comunican enviandose mensajes. El cliente envia un mensae de petición a el servidor. El servidor responde con un mensaje de respuesta.
+
+Un mensaje HTTP consiste de un mensaje de cabecera y un cuerpo de mensaje opcional separados por una linea en blanco, como se ilustra a continuación:
+
+![HTTP Messages Image](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP_MessageFormat.png)
+
+#### Mensaje de petición HTTP
+
+El formato de un mensaje de petición HTTP es como se ilustra a continuación:
+
+![HTTP Request Message](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP_RequestMessage.png)
+
+##### Linea de petición
+
+La primer linea de la cabecera es llamada Linea de petición. Tiene la siguiente sintaxis:
+
+	request-method-name request-URL HTTP-version
+
+* request-method-name: El protocolo HTTP define un set de métodos de petición, por ejeplo _GET_, _POST_, _HEAD_, y _OPTIONS_.El cliente puede usar uno de estos métodos para enviar una petición al servidor.
+
+* request-URL: Especifica el recurso solicitado.
+
+* HTTP-version: Las versiones HTTP/1.0 y HTTP/1.1
+
+Algúnos ejemplos de Lineas de petición: 
+
+	GET /test.html HTTP/1.1
+	HEAD /query.html HTTP/1.0
+	POST /index.html HTTP/1.1
+
+##### Cabeceras de petición
+
+Las cabeceras de petición vienen en forma de pares de valores. Multiples valores, separados por comas, por ejemplo:
+	
+	request-header-name: request-header-value1, request-header-value2, ...
+
+Ejemplos de cabeceras de petición:
+
+	Host: www.xyz.com
+	Connection: Keep-Alive
+	Accept: image/gif, image/jpeg, */*
+	Accept-Languaje: us-en, fr, cn
+
+
+##### Ejemplo
+
+El siguiente ejemplo muestra un mensaje de petición HTTP :
+
+![REQUEST MESSAGE IMAGE](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP_RequestMessageExample.png)
+
+#### Mensaje de respuesta HTTP
+
+El formato de un mensaje de respuesta HTTP es el siguiente:
+
+![RESPONSE MESSAGE IMAGE](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP_ResponseMessage.png)
+
+##### Linea de Estatus
+
+La primera linea es llamada Linea de estatus. Tiene la siguiente sintaxis:
+
+	HTTP-version status-code reason-phrase
+
+* HTTP-version: La versión de HTTP usada en esa sesión. La HTTP/1.0 o la HTTP/1.1.
+
+* status-code: un número de 3 dígitos generado por el servdor como reflejo de una petición externa.
+
+* reason-phrase: da una breve explicación de el código de estatus.
+
+* Códigos de estatus comunes son por ejemplo "200 OK" , "404 Not Found", "403 Forbidden", "500 Internal Server Error"
+
+Ejemplos de lineas de estatus: 
+
+	HTTP/1.1 200 OK
+	HTTP/1.0 404 Not Found
+	HTTP/1.1 403 Forbidden
+
+#### Cabeceras de respuesta
+
+Las cabeceras de respuesta vienen en pares de valores:
+
+	response-header-name: response-header-value1, responde-header-value2,...
+
+Ejemplos de cabeceras de respuesta:
+
+	Content-Type: text/html
+	Content-Length: 35
+	Connection: Keep-Alive
+	Keep-Alive: timeout=15, max=100
+
+El cuerpo del mensaje de respuesta contiene la información solicitada.
+
+##### Ejemplo
+
+La siguiente imagen muestra un mensaje de respuesta:
+
+![RESPONSE MESSAGE EXAMPLE IMAGE](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP_ResponseMessageExample.png)
 
