@@ -103,4 +103,18 @@ El navegador recive el mensaje de respuesta, interpreta el mensaje y muestra el 
 
 En su estado vacio, un servidor HTTP no hace nada mas que esperar la dirección IP y el puerto especificado en la configuración de la petición entrante. Cuando una petición llega, el servidor analiza el mensaje de cabecera, aplica las reglas especificas de la configuración y toma acciones apropiadas. El control principal del Webmaster sobre el servidor web es mediante la configuración, la cual dera tratada con mas detalles en las siguientes secciones.
 
+## HTTP Sobre TCP/IP
 
+HTTP es un protocolo a nivel aplicación cliente-servidor. Normalmente corre sobre una conexión TCP/IP, como se ilustra en la siguiente imagen. (El HTTP no necesita correr en TCP/IP. Es solo un transporte de confianza. Cualquier protocolo de transporte que provea tal seguridad puede ser utilizado.)
+
+![ISO OSI 7-layer network Image](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP_OverTCPIP.png)
+
+El TCP/IP (Transmission Control Protocol/Internet Protocol - Protocolo de control de transmición/ Protocolo de Internet) es un set de transporte de protocolos de maquinas para comunicarse unas con otras a través de la Net.
+
+El IP (Internet Protocol/ Protocolo de Internet) es un protocolo de capa de red, trata con la direccion de la red y el routing. En una IP de red, cada maquina es asignada con una unica dirección de IP (ej. 165.1.2.3), y el software responsable para en enrutamiento del mensaje desde la IP de origen a la IP de destino. En la IPv4, la dirección IP consiste en 4 bytes, cada uno con rango de 0 a 255, separado por puntos, los cuales son llamados _quad-dotted form_. Este esquema soporta direcciones 4G en la red. La última IPv6 soporta mas direcciónes. Desde que memorizar el numero es dificil para mucha gente, un dominio con nombre, como www.nowhere123.com es usado en su lugar. El DNS (Domain Name Service /Servicio de nombre de dominio) traduce el nombre del dominio en la dirección IP. Una dirección IP especial 127.0.0.1 siempre referencia hacia nuestra propia máquina. Su nombre de dominio es "local host" y puede ser usada para testeo local.
+
+El TCP es un protocolo de transferencia de capas, responsable de establecer una conexión entre dosmaquinas. El TCP consiste de 2 procolos: el TCP y el UDP (User Datagram Prackage). En el TCP, cada paquete tiene una secuencia de números y un conocimiento esperado. Un paquete sea retransmitido si no fue recibido. Un paquete enviado es garantizado en el TCP. UDP no garantiza la entrega del paquete. De cualquier manera, el UDP tiene menos sobrecalentamiento de red y puede ser utilizado para aplicaciones como transmición de audio y video.
+
+Para cada IP, el TCP soporta hasta 65536 puertos, de el numero 0 al 65535. Una aplicación, como HTTP o FTP corre en un puerto particular de solicitudes entrantes. Del puerto 0 al 1023 son pre-asignados a protocolos populares, por ejemplo el HTTP al 80, el FTP al 21, Telnet al 23, etc.
+
+Aunque para el TCP el puerto 80 esta preasignado a HTTP como puerto por default, no esta prohibido correr un servidor HTTP en otro puerto no asignado, especialmente para testear el servidor. También se pueden correr múltiples servidores HTTP en la misma maquina con diferentes números de puerto. Cuando un cliente solicita una URL sin un número de puerto especifico, el navegador  conectara al puerto por default, el 80.
