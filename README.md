@@ -229,3 +229,23 @@ La siguiente imagen muestra un mensaje de respuesta:
 
 ![RESPONSE MESSAGE EXAMPLE IMAGE](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP_ResponseMessageExample.png)
 
+### HTTP Request Methods
+
+El protocolo HTTP define un set de metodos de solicitud. El cliente puede usar uno de estos metodos para enviar un mensaje de solicitud a un servidor HTTP. Estos metodos son:
+
+* GET: El cliente utiliza GET para pedir un recurso web de un servidor.
+
+* HEAD: El cliente utiliza HEAD para pedir la cabecera que un comando GET obtendria. Desde que la cabecera contiene la fecha de moficicación, este puede ser usado para checar el cache local.
+
+* POST: Usado para postear la información en el servidor web.
+
+* PUT: Le pregunta al servidor sobre la información almacenada.
+
+* DELETE: Le pregunta al servidor sobre la información borrada.
+
+* TRACE: Le pide al servidor un diagnostico de las acciones que toma.
+
+* OPTIONS: Le pide al servidor regresar la lista de metodos de solicitud que soporta.
+
+* CONNECT: Es usado para decirle a un proxy que haga una conexion a algun otro host y de manera simple replicar el contenido pero sin enviarlo al cache. Esto es muy usado para hacer una conexion SSL a traves de un proxy.
+
