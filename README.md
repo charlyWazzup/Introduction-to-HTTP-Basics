@@ -630,4 +630,37 @@ La siguiente cabecera puede ser usada para _negociar contenido_  con el cliente 
 
 **If-Modified-Since: date** - Le dice al servidor que envie solo la página que fue modificada despues de una fecha especifica.
 
+### Solicitud GET para un Directorio
+
+Supongamos que tenemos un directorio llamado "testdir" en el directorio base "htdocs".
+
+Si el cliente emite una solcitud GET a "/testdir/":
+1. El servidor regresara "/testdir/index.html"si el directorio cotiene un archivo "index.html".
+2. De otra manera, el servidor regresa la lista del directorio si esta activada.
+3. De cualquier otra manera, el servidor regresa "404 Page Not Found".
+
+Es importante tomar nota que si el cliente emite una solicitud GET a "/testdir", el servidor regresara un "301 Move Permanently" con una nueva "locación" de "/testdir/" como se muestra a continuación:
+
+	GET /testdir HTTP/1.1
+	Host: 127.0.0.1
+	(blank line)
+
+	HTTP/1.1 **301 Moved Permanently**
+	Date: Sun, 18 Oct 2009 13:19:15 GMT
+	Server: Apache/2.2.14 (Win32)
+	**Location: http://127.0.0.1:8000/testdir/**
+	Content-Length: 238
+	Content-Type: text/html; charset=iso-8859-1
+
+	<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+	<html><head>
+	<title>301 Moved Permanently</title>
+	</head><body>
+	<h1>Moved Permanently</h1>
+	<p>The document has moved <a href="http://127.0.0.1:8000/testdir/">here</a>.</p>
+
+	</body></html>
+
+La mayoria de los navegadores seguiran con otra petición a "/testdir/". Por ejemplo, si escribimos _http://127.0.0.1:8000/testdir_ son el "/" de un navegador, nos daremos cuenta que un "/" fue agregado a la dirección en la respuesta dada. La moraleja de la historia es: debemos incluir el "/" para el directorio solicitado para ahorrarnos una peticion GET extra.
+
 
