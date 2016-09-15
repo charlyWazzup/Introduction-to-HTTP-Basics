@@ -537,3 +537,50 @@ La siguiente solicitud GET intenta acceder a un recurso protegido. El servidor r
 	</body></html>
 
 
+### HTTP/1.1 GET Request
+
+Un servidor HTTP/1.1 soporta _virtual hosts_. Esto es, el mismo servidor fisico puede albergar varios hosts virtuales con diferentes nombres y sus propios directorios raices. Por lo tanto, en una solicitud GET en HTTP/1.1, es necesario incluir una cabecera llamada "Host" para seleccionar uno de los hosts virtuales.
+
+##### Ejemplo: Solicitud HTTP/1.1
+
+HTTP/1.1 mantiene una conexión  persistente por default para aumentar la eficiencia de a red. Podemos usar la cabecera "Connection: Close" para pedirle al servidor que cierre la conexión TCP cuando la respuesta haya sido entregada.
+
+	GET /index.html HTTP/1.1
+	Host: 127.0.0.1
+	(blank line)
+
+	HTTP/1.1 200 OK
+	Date: Sun, 18 Oct 2009 12:10:12 GMT
+	Server: Apache/2.2.14 (Win32)
+	Last-Modified: Sat, 20 Nov 2004 07:16:26 GMT
+	ETag: "10000000565a5-2c-3e94b66c2e680"
+	Accept-Ranges: bytes
+	Content-Length: 44
+	Content-Type: text/html
+
+	<html><body><h1>It works!</h1></body></html>
+
+##### Ejemplo: Cabecera Host perdida en HTTP/1.1
+
+El siguiente ejemplo muestra que una cabecera "Host" es necesaria en una solicitud HTTP/1.1. Si esta cabecera no esta, el servidor regresara el error "400 Bad Request".
+
+	GET /index.html HTTP/1.1
+	(blank line)
+
+	HTTP/1.1 400 Bad Request
+	Date: Sun, 18 Oct 2009 12:13:46 GMT
+	Server: Apache/2.2.14 (Win32)
+	Content-Length: 226
+	Connection: close
+	Content-Type: text/html; charset=iso-8859-1
+
+	<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+	<html><head>
+	<title>400 Bad Request</title>
+	</head><body>
+	<h1>Bad Request</h1>
+	<p>Your browser sent a request that this server could not understand.<br />
+	</p>
+	</body></html>
+
+
