@@ -315,3 +315,42 @@ Un ejemplo de un programa de red escrito en _Java_ se muestra a continuación (a
 		}
 	}
 
+### HTTP/1.0 solicitud GET
+
+El siguiente código muestra la respuesta de una solicitud GET en HTTP/1.0 (via telnet o en nuestro propio programa de red, asumiendo que el servidor HTTP esta funcionando):
+
+	**GET /index.html HTTP/1.0**
+	(enter twice to create a blank line)
+
+
+	**HTTP/1.1 200 OK**
+	Date: Sun, 18 Oct 2009 08:56:53 GMT
+	Server: Apache/2.2.14 (Win32)
+	Last-Modified: Sat, 20 Nov 2004 07:16:26 GMT
+	ETag: "10000000565a5-2c-3e94b66c2e680"
+	Accept-Ranges: bytes
+	Content-Length: 44
+	Connection: close
+	Content-Type: text/html
+	X-Pad: avoid browser bug
+
+	<html><body><h1>It works!</h1></body></html>
+
+	Connection to host lost.
+
+En este ejemplo, el cliente emitio una solicitud GET a un documento llamado "_index.html_" y negocia el protocolo HTTP/1.0. Una linea en blanco despues de la cabecera es necesaria. Esta solicitud no contiene ningun cuerpo de mensaje.
+
+El servido recibe el mensaje de solicitud, lo interpreta y mapea la _solicitud  URI_ a un documento debajo del directorio del documento. Si el documento solicitado esta disponible, el servidor regresa el documento con un mensaje de respuesta "_200 OK_". Las cabeceras de respuesta prveen la descripción necesaria de el documento regresado, como la ultima modificación (_Last-Modified_), el MIME type (Content-Type), y el tamaño del documento (Content-Length). El cuerpo de la resuesta contiene el documento solicitado. El navegador dara formato y mostara el documento de acuerdo al tipo que sea (ej. Texto plano, HTML, JPEG, GIF, etc) y además otra informacion obtenida desde las respuestas de las cabeceras.
+
+Notas:
+
+* El metodo "_GET_", distingue mayúsculas y minúsculas. Debe estar en mayúsculas.
+* Si el nombre del metodo de solicitud es deletrado de manera erronea, el servidor regresara un mensaje de error "_501 Method Not Implemented_"
+* Si el nombre del metodo no esta permitido, el servidor regresara un mensaje de error "_405 Method Not Allowed_". Ej., DELETE es un nombre valido, pero no puede ser implementado por el servidor.
+* Si la solicitud _URI_ no existe, el servidor regresara un mensaje de error "404 Not Found". Debemos proporcionar una _request-URI_ apropiada, desde la raíz del documento "/". De otra manera, el servidor regresara "400 Bad Request".
+* Si la versión de HTTP no es correcta, el servidor regresara "400 Bad Request".
+* En HTTP/1.0, por default, el servidor cierra la conección TCP despues de entregar la respuesta. Si usamos _telnet_ para conecter al servidor, el mensaje "Connection to host lost" aparece inmediatamente despues de que el cuerpo de la respuesta es recibido. Podemos usar una cabecera opcional "_Connection: Keep-Alive_" para una conección persistente, asi la otra solicitud puede ser enviada a través de la misma conección TCP para mejorar la eficiencia de la red. Por el otro lado, HTTP/1.1 utiliza la conección _keep-alive_ por defecto.
+
+
+
+
