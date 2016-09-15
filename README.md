@@ -584,3 +584,16 @@ El siguiente ejemplo muestra que una cabecera "Host" es necesaria en una solicit
 	</body></html>
 
 
+### Solicitudes condicionales GET
+
+En todos los ejemplos anteriores, el servidor regresa un documento entero si la solicitud fue cumplida. Debemos usar una cabecera adicionar para emitir una "_Solicitud condicional_". Por ejemplo, para pedir un documento basado en su última fecha de modificación, o para pedir una porción del documento, en vez del documento entero.
+
+La cabecera condicional incluye:
+
+* If-Modified-Since (check for response status code "304 Not Modified").
+* If-Unmodified-Since
+* If-Match
+* If-None-Match
+* If-Range
+
+
