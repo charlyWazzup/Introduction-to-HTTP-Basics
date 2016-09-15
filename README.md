@@ -596,4 +596,38 @@ La cabecera condicional incluye:
 * If-None-Match
 * If-Range
 
+### Cabeceras de solicitud
+
+Esta seccion describe algunas de las cabeceras mas comunes. Refenrenciado a las especificaciones de HTTP. La sintaxis del nombre de la cabecera inicia con una mayúscula unida a un guión. Ej., Content-Length, If-Modified-Since.
+
+**Host: domain-name** - HTTP/1.1. Soporta hosts virtuales. Multiples nombres de DNS pueden estar en el mismo servidor fisico, con sus propios documentos y directorios. El Host en la cabecera es necesario en HTTP/1.1 para elegir uno de los Hosts.
+
+La siguiente cabecera puede ser usada para _negociar contenido_  con el cliente para pedir al servidor entregar el tipo preferido de documento si el servidor maneja multiples versiones para el mismo documento.
+
+**Accept: mime-type-1, mime-type-2, ...** -  El cliente puede usar la cabecera _Accept_ para decirle al servidor los _MIME types_ que puede soportar y que prefiere. Si el servidor tiene múltiples versiones del documento solicitado, puede checar su cabecera para decidir que version sera entregada al cliente. Este proceso es conocido como _content-type negotiaton_.
+
+**Accept-Language: language-1, language-2, ...** - El cliente puede usar la cabecera _Accept-Language_ para decirle al servidor que lenguaje puede soportar y/o prefiere. Si el servidor tiene múltiples versiones del documento solicitado, puede checar la cabecera para decidir que versión regresar. Este proceso es conocido como _language negotiation_.
+
+**Accept-Charset: Charset-1, Charset-2, ...** - Para la negociación de caracteres, el cliente puede usar esta cabecera para decir cuales prefiere. Ejemplos de sets de caracteres son el ISO-8859-1, ISO-8859-2, ISO-8859-5, BIG5, UCS2, UCS4, UTF8.
+
+**Accept-Encoding: encoding-method-1, encoding-method-2, ...** - El cliente puede usar esta cabecera para decirle al servidor el tipo de codificación que soporta. Si el servidor tiene una versión codificada del documento solicitado, puede regresar una version codificada soportada por el cliente. El servior tabien decide codificar el documento antes de regresarlo al cliente para reducir el tiempo de transmición. El servidor debe colocar la cabecera "Content-Encoding" para informar al cliente que el documento regresado está codificado. Los metodos más comúnes de codificación son "x-gzip (.gz, .tgz)" and "x-compress (.Z)".
+
+**Connection: Close|Keep-Alive** - El cliente puede usar esta cabecera para decirle al servidor cuando cerrar la conexión, o mantener la para otra petición. HTTP/1.1 utiliza una conexiónpersistente por default. HTTP/1.0 cierra todas las conexiones por default.
+
+**Referer: referer-URL** - El cliente puede usar esta cabecera para indicar la referencia de esta petición. Si damos click en un enlace de una Web 1 para visitar una Web 2, la Web 1 es la petición ferenciada a la Web 2. La mayoria de los navegadores ponen esta cabecera, la cual puede ser usada para localizar desde donde viene la petición. Sin embargo, esta cabecera no es de confianza y puede ser falsificada facilmente.
+
+**User-Agent: browser-type** -  Identifica el tipo de navegador utilizado para hacer la petición. El servidor puede usar esta información para regresar un documento diferente dependiente el tipo de navegador.
+
+**Content-Length: number-of-bytes** -  Usado por la petición POST para informar al servidor el tamaño del cuerpo de la petición.
+
+**Content-Type: mime-type** -  Usado por la petición POST para informar el tipo de medios del cuerpo de la petición.
+
+**Cache-Control: no-cache|...** - El cliente puede usar esta cabecera para especificar cuantas páginas sera cacheadas por el proxy.
+
+**Authorization:** Usada por el cliente para proporcionar las credenciales necesarias para acceder a recursos protegidos.
+
+**Cookie: cookie-name-1=cookie-value-1, cookie-name-2=cookie-value-2, ...** - El cliente utiliza esta cabecera para regresar una cooki devuelta al servidor, la cual fue enviada anteriormente por el mismo servidor para administrar el estado.
+
+**If-Modified-Since: date** - Le dice al servidor que envie solo la página que fue modificada despues de una fecha especifica.
+
 
