@@ -732,7 +732,7 @@ La sintaxis de _HEAD_ es como se muestra a continuación:
 Notese que la respuesta consiste de una única cabecera sin el cuerpo.
 
 
-### Metodo de petición "OPTIONS"
+### Método de petición "OPTIONS"
 
 El cliente puede utilizar _OPTIONS_ para solicitar una consulta que sea soportada. La sintaxis para _OPTIONS_ es la siguiente:
 
@@ -763,4 +763,42 @@ En este ejemplo, _OPTIONS_ se envia a traves de un servidor proxy:
 	(blank line)
 
 Todos los servidores que permitan GET permitiran HEAD. Algunas veces, HEAD no se encuenta listada.
+
+
+### Método de petición "TRACE"
+
+El cliente puede enviar una petición _TRACE_ para pedir un diagnostico al servidor.
+_TRACE_ tiene la siguiente sintaxis:
+
+	TRACE / HTTP-version
+	(blank line)
+
+##### Ejemplo
+
+El siguiente ejemplo muestra una petición TRACE usando un servidor proxy.
+
+	TRACE http://www.amazon.com/ HTTP/1.1
+	Host: www.amazon.com
+	Connection: Close
+	(blank line)
+
+
+	HTTP/1.1 200 OK
+	Transfer-Encoding: chunked
+	Date: Fri, 27 Feb 2004 09:44:21 GMT
+	Content-Type: message/http
+	Connection: close
+	Server: Stronghold/2.4.2 Apache/1.3.6 C2NetEU/2412 (Unix)
+	Connection: close
+	Via: 1.1 xproxy (NetCache NetApp/5.3.1R4D5)
+	
+	9d
+	TRACE / HTTP/1.1
+	Connection: keep-alive
+	Host: www.amazon.com
+	Via: 1.1 xproxy (NetCache NetApp/5.3.1R4D5)
+	X-Forwarded-For: 155.69.185.59, 155.69.5.234
+
+	0
+
 
