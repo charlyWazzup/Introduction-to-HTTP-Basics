@@ -702,4 +702,32 @@ El siguiente ejemplo fue usado en telnet. Una conexión es establecda con el ser
 
 Notese que la respuesta fue regresada en "pedazos".
 
+### Metodo de petición "HEAD"
+
+_HEAD_ es similar a _GET_. Sin embargo, el servidor regresa solamente la cabecera de respuesta sin el cuerpo del mismo, el cual contiene el documento actual. _HEAD_ es muy útil para checar las cabeceras, como _Last-Modified_, _Content-Type_, _COntent-Lenght_, antes de enviar una solicitud GET apropiada.
+
+La sintaxis de _HEAD_ es como se muestra a continuación:
+
+	HEAD request-URI HTTP-version
+	(other optional request headers)
+	(blank line)
+	(optional request body)
+
+##### Ejemplo
+
+	**HEAD** /index.html HTTP/1.0
+	(blank line)
+
+	HTTP/1.1 200 OK
+	Date: Sun, 18 Oct 2009 14:09:16 GMT
+	Server: Apache/2.2.14 (Win32)
+	Last-Modified: Sat, 20 Nov 2004 07:16:26 GMT
+	ETag: "10000000565a5-2c-3e94b66c2e680"
+	Accept-Ranges: bytes
+	Content-Length: 44
+	Connection: close
+	Content-Type: text/html
+	X-Pad: avoid browser bug
+
+Notese que la respuesta consiste de una única cabecera sin el cuerpo.
 
