@@ -351,6 +351,35 @@ Notas:
 * Si la versión de HTTP no es correcta, el servidor regresara "400 Bad Request".
 * En HTTP/1.0, por default, el servidor cierra la conección TCP despues de entregar la respuesta. Si usamos _telnet_ para conecter al servidor, el mensaje "Connection to host lost" aparece inmediatamente despues de que el cuerpo de la respuesta es recibido. Podemos usar una cabecera opcional "_Connection: Keep-Alive_" para una conección persistente, asi la otra solicitud puede ser enviada a través de la misma conección TCP para mejorar la eficiencia de la red. Por el otro lado, HTTP/1.1 utiliza la conección _keep-alive_ por defecto.
 
+### Código de los mensajes de estado
 
+La primera linea del mensaje de respuesta contiene el código de estado, el cual es generado por el servidor para indicar que esta sucediendo.
 
+El código de estado es un numero de 3 dígitos:
+
+* 1xx (Informacional): Solicitud recibida, el servidor continuara con el proceso.
+* 2xx (Éxito): La solicitud fue exitosamente recibida, entendida, aceptada y despachada.
+* 3xx (Redirección): Alguna otra accion es necesaria para completar la solicitud.
+* 4xx (Error del cliente): La solicitud tenía una sintaxis erronea o no puede ser entendida.
+* 5xx (Error del servidor): El servidor fallo en cumplir una solicitud valida.
+
+Algúnos de los códigos de estados más comunes son los siguientes:
+
+* 100 Continue: El servidor recibio la solocitud y en el proceso dió una respuesta.
+* 200 OK: La solicitud fue cumplida.
+* 301 Move Permanently: El recurso solicitado ha sido permanentemente movido de lugar. La URL de la nueva locacion es proporcionada en la cabecera de respuesta y es llamada _Location_. El cliente debe emitir una nueva solicitud a la nueva locación. La aplicación debe actualizar todas las referencias a esta nueva locación.
+* 302 Found & Redirect (or Move Temporarily): Al igual que la el 301, pero la nueva locacion es temporal. El cliente debe emitir una nueva solicitud, pero la aplicación no necesita actualizar las referencias.
+* 304 Not Modified: En respuesta a la condicional _If-modified-Since_ del GET, el servidor notifica que el recurso solicitado no ha sido modificado.
+* 400 Bad Request: El servidor no pudo interpretar o entender la solicitud, probablemente un error de sintaxis en el mensaje.
+* 401 Authentication Required: El recurso solicitado esta protegido y requiere las credenciales del cliente (username/password). El cliente debe re-subir la solicitud con sus credenciales (username/password).
+* 403 Forbidden: El servidor se reusa a proporcionar el recurso, independientemente de la identidad del cliente.
+* 404 Not Found: El recurso solicitado no puede ser encontrado en el servidor.
+* 405 Method Not Allowed: El metodo utilizado, POST, PUT o DELETE, es un metodo invalido. De cualquier manera, el servidor no permite ese metodo para el recurso solicitado.
+* 408 Request Timeout.
+* 414 Request URI too Large
+* 500 Internal Server Error: El servidor esta confundido, muchas veces por un error del lado del programa local respondiendo a la solicitud.
+* 501 ethod Not Implemented: El metodo usado es invalido (puede ser causado por escribir un error, ej., escribir "GET" de en minusculas "Get").
+* 502 Bad Gateway: El proxy o la puerta indica que recibe una mala respuesta del servidor.
+* 503 Service Unavailable: El servidor no puede responde debido a mantenimiento o sobrecarga. El cliente puede intentar despues.
+* 504 Gateway Timeout: El proxy o la puerta indican rebicen un "fuera de tiempo" desde el servidor.
 
