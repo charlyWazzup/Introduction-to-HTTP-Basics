@@ -731,3 +731,36 @@ La sintaxis de _HEAD_ es como se muestra a continuación:
 
 Notese que la respuesta consiste de una única cabecera sin el cuerpo.
 
+
+### Metodo de petición "OPTIONS"
+
+El cliente puede utilizar _OPTIONS_ para solicitar una consulta que sea soportada. La sintaxis para _OPTIONS_ es la siguiente:
+
+	OPTIONS request-URI|* HTTP-version
+	(other optional headers)
+	(blank line)
+
+El asterisco puede ser usado en lugar de una solicitud URI para indicar que la solicitud no aplica a un recurso en particular.
+
+##### Ejemplo
+
+En este ejemplo, _OPTIONS_ se envia a traves de un servidor proxy:
+
+	OPTIONS http://www.amazon.com/ HTTP/1.1
+	Host: www.amazon.com
+	Connection: Close
+	(blank line)
+
+
+	HTTP/1.1 200 OK
+	Date: Fri, 27 Feb 2004 09:42:46 GMT
+	Content-Length: 0
+	Connection: close
+	Server: Stronghold/2.4.2 Apache/1.3.6 C2NetEU/2412 (Unix)
+	Allow: GET, HEAD, POST, OPTIONS, TRACE
+	Connection: close
+	Via: 1.1 xproxy (NetCache NetApp/5.3.1R4D5)
+	(blank line)
+
+Todos los servidores que permitan GET permitiran HEAD. Algunas veces, HEAD no se encuenta listada.
+
