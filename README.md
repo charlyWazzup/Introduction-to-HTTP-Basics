@@ -263,3 +263,55 @@ GET es el metodo de peticion mas comun en HTTP. Un cliente puede utilizar el met
 * HTTP-version: Ambas, HTTP/1.0 o la HTTP/1.1. Este cliente nefocia el protocolo que se usara en la sesion. Por ejemplo, el cliente puede solicitar usar el HTTP/1.1. Si el servidor no soporta HTTP/1.1, debe informar al cliente que debe utilizar HTTP/1.0.
 * El cliente usa cabeceras de petición opcionales (tal como _Accept_, _Accept-Language_, etc.) para negociar con el servidor y pedir que envie el contenido. (ej., en el lenguaje que el cliente prefiera).
 * La Peticion GET tiene un cuerpo opcionar, el cual contiene una cadena de texto.
+
+### Solicitudes HTTP de prueba
+
+Existen varias formas de probar una solicitud en HTTP. Podemos utilizar un programa como _"telnet"_ o _"hyperterm"_, o escribir en algun otro programa de red para enviar un mensaje a cecas a un servidor HTTP para probar las solicitudes.
+
+##### Telnet
+
+_Telnet_ es muy utilizado. Podemos usarlo para establecer una coneccion TCP con un servidor y enviar una solicitud HTTP. Por ejemplo, supongamos que hemos empezado un servidor HTTP en nuestro _localhost_ (dirección IP 127.0.0.1) en el puerto 8000:
+
+	> **telnet**
+	telnet> **help**
+	... telnet help menu ...
+	telnet> **open 127.0.0.1 8000**
+	Connecting To 127.0.0.1...
+	**GET /index.html HTTP/1.0**
+	(Hit enter twice to send the terminating black line ...)
+	... HTTP response message ...
+
+Telnet es un protocolo basado en caracteres. Cada caracter que ingresamos en el cliente _telnet_ será enviado al servidor inmediatamente. Por lo tanto, no podemos provocar un error ortográfico ingresando un comando en bruto, como borrar y enviar un espacio en blanco al servidor. Debemos tener activado la opcion de "local echo" para ver los caracteres que ingresamos. Revisa el manual telnel para mas detalles sobre el uso de telnet.
+
+##### Programa de Red
+
+También podemos escribir nuestro propio programa de red para emitir solicitudes HTTP a un servidor HTTP. Nuestro programa de red debe primero establecer una conección TCP/IP con el servidor. Una vez que la conección TCP ha sido establecida, podemos emitir la solicitud en bruto.
+
+Un ejemplo de un programa de red escrito en _Java_ se muestra a continuación (asumiendo que el servidor HTTP esta corriendo en el _localhost_ (dirección IP 127.0.0.1) en el puerto 8000):
+
+	import java.net.*;
+	import java.io.*;
+
+	public class HttpClient{
+		public static void main(String[] args) throws IOException {
+			// The host and port to be connected.
+			String host = 8000;
+			// Create a TCP socket and connect to the host:port.
+			Socket socket = new Socket(host, port);
+			// Create the input and output streams for the network socket.
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStreams()));
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			// Send request to the HTTP server.
+			out.println("**GET /index.html HTTP/1.0**");
+			out.println(); // blan line separating header & body
+			out.flush(); // Read the response and display on console.
+			String line; // ReadLine() returns null if server close the network socket.
+			while((line = in.readLine()) != null) {
+				System.out.println(line);
+			}
+			// Close the I/0 streams.
+			in.close();
+			out.close();
+		}
+	}
+
