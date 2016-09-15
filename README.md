@@ -383,3 +383,157 @@ Algúnos de los códigos de estados más comunes son los siguientes:
 * 503 Service Unavailable: El servidor no puede responde debido a mantenimiento o sobrecarga. El cliente puede intentar despues.
 * 504 Gateway Timeout: El proxy o la puerta indican rebicen un "fuera de tiempo" desde el servidor.
 
+### Mas ejemplos de solicitud GET en HTTP/1.0
+
+##### Ejemplo: Metodo mal escrito
+
+En esta solicitud, "GET" fue escrito como "get". El servidor regresara el error "501 Method Not Implemented". La cabecera de respuesta "Allow" le dice al cliente los metodos permitidos.
+
+	**get** /test.html HTTP/1.0
+	(enter twice to create a blank line)
+
+	HTTP/1.1 **501 Method Not Implemented**
+	Date: Sun, 18 Oct 2009 10:32:05 GMT
+	Server: Apache/2.2.14 (Win32)
+	**Allow: GET,HEAD,POST,OPTIONS,TRACE**
+	Content-Length: 215
+	Connection: close
+	Content-Type: text/html; charset=iso-8859-1
+
+	<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+	<html><head>
+	<title>501 Method Not Implemented</title>
+	</head><body>
+	<h1>Method Not Implemented</h1>
+	<p>get to /index.html not supported.<br />
+	</p>
+	</body></html>
+
+##### Ejemplo: 404 File Not Found
+
+En esta solicitud GET, la solicitud _URI_ "/t.html" no puede ser encontrada en el el directorio del servidor. El servidor regresa el mensaje "404 Not Found".
+
+	GET **/t.html** HTTP/1.0
+	(enter twice to create a blank line)
+
+	HTTP/1.1 404 Not Found
+	Date: Sun, 18 Oct 2009 10:36:20 GMT
+	Server: Apache/2.2.14 (Win32)
+	Content-Length: 204
+	Connection: close
+	Content-Type: text/html; charset=iso-885-1
+
+	<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+	<html><head>
+	<title>404 Not Found</title>
+	</head><body>
+	<h1>Not Found</h1>
+	<p>The requested URL /t.html was not found on this server.</p>
+	</body></html>
+
+##### Ejemplo: Numero de versión HTTP erroneo
+
+En esta solicitud GET, la version HTTP está mal escrita, resultado de una mala sintaxis. El servidor regresa el error "404 Bad Request". La version HTTP debe ser HTTP/1.0 o HTTP/1.1.
+
+	GET /index.html **HTTTTTP/1.0**
+	(enter twice to create a blank line)
+
+	HTTP/1.1 **400 Bad Request**
+	Date: Sun, 08 Feb 2004 01:29:40 GMT
+	Server: Apache/1.3.29 (Win32)
+	Connection: close
+	Content-Type: text/html; charset=iso-8859-1
+
+	<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+	<HTML><HEAD>
+	<TITLE>400 Bad Request</TITLE>
+	</HEAD><BODY>
+	<H1>Bad Request</H1>
+	Your browser sent a request that this server could not understand.<P>
+	The request line contained invalid characters following the protocol string.<P><P>
+	</BODY></HTML>
+
+Nota: La última version de Apache ignora este error y regresa el documento con el código "200 OK"
+
+##### Ejemplo: Solicitud URI erronea
+
+En la siguiente solicitud GET, la solicitud URI no fue comenzada con "/", resultando en un "bad request".
+
+	GET test.html HTTP/1.0
+	(blank line)
+
+	HTTP/1.1 400 Bad Request
+	Date: Sun, 18 Oct 2009 10:42:27 GMT
+	Server: Apache/2.2.14 (Win32)
+	Content-Length: 226
+	Connection: close
+	Content-Type: text/html; charset=iso-8859-1
+
+	<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+	<html><head>
+	<title>400 Bad Request</title>
+	</head><body>
+	<h1>Bad Request</h1>
+	<p>Your browser sent a request that this server could not understand.<br />
+	</p>
+	</body></html>
+
+##### Ejemplo: Conección Keep-Alive
+
+Por default, para una solicitud GET en HTTP/1.0, el servidor cierra la conección TCP una vez que la respuesta ha sido entregada. Podemos solicitar que la conexión TCP se mantenga, por medio de una cabecera del tipo "Connection: Keep/Alive". El servidor incluye una cabecera de mensaje del tipo "Connection: Keep-Alive" para informarle al cliente que puede enviar otra solicitud usando esa conexión, antes de que expire la conexión. Otro tipo de cabecera puede ser "Keep-Alive: timeout=x, max=x", esta le dice al cliente el tiempo máximo y el número máximo de solicitudes que puedes ser enviadas por esa conexión.
+
+	GET /test.html HTTP/1.0
+	**Connection: Keep-Alive**
+	(blank line
+
+	HTTP/1.1 200 OK
+	Date: Sun, 18 Oct 2009 10:47:06 GMT
+	Server: Apache/2.2.14 (Win32)
+	Last-Modified: Sat, 20 Nov 2004 07:16:26 GMT
+	ETag: "10000000565a5-2c-3e94b66c2e680"
+	Accept-Ranges: bytes
+	Content-Length: 44
+	Keep-Alive: timeout=5, max=100
+	Connection: Keep-Alive
+	Content-Type: text/html
+
+	<html><body><h1>It works!</h1></body></html>
+
+Notas:
+
+* El mensaje "Connection to host lost" (para telnet) aparece despues de "keep-alive timeout".
+* Antes de que el mensaje "Connection to host lost" aparezca, podemos enviar otra solicitud mediante la misma conexión TCP.
+* La cabecera "Connection: Keep-Alive" no reconoce mayúsculas ni minúsculas. El espacio es opcional.
+* Si una cabecera opcional es invalida o está mal escrita, esta sera ignorada por el servidor.
+
+
+##### Ejemplo: Accesando a un recurso protegido
+
+La siguiente solicitud GET intenta acceder a un recurso protegido. El servidor regresa el error "403 Forbidden". En este ejemplo, el directorio "htdocs\forbidden" esta configurada para denegar todo el acceso en el servidor HTTP de Apache, y esta configurado de la siguiente manera:
+
+	<Directory "C:/apache/htdocs/forbidden>
+	Order deny,allow
+	deny from all
+	</Directory>
+
+	GET **/forbidden/index.html** HTTP/1.0
+	(blank line)
+
+	HTTP/1.1 **403 Forbidden**
+	Date: Sun, 18 Oct 2009 11:58:41 GMT
+	Server: Apache/2.2.14 (Win32)
+	Content-Length: 222
+	Keep-Alive: timeout=5, max=100
+	Connection: Keep-Alive
+	Content-Type: text/html; charset=iso-8859-1
+
+	<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+	<html><head>
+	<title>403 Forbidden</title>
+	</head><body>
+	<h1>Forbidden</h1>
+	<p>You don't have permission to access /forbidden/index.html
+	on this server.</p>
+	</body></html>
+
+
