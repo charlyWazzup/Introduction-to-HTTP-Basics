@@ -249,3 +249,17 @@ El protocolo HTTP define un set de metodos de solicitud. El cliente puede usar u
 
 * CONNECT: Es usado para decirle a un proxy que haga una conexion a algun otro host y de manera simple replicar el contenido pero sin enviarlo al cache. Esto es muy usado para hacer una conexion SSL a traves de un proxy.
 
+### *GET* Request Method
+
+GET es el metodo de peticion mas comun en HTTP. Un cliente puede utilizar el metodo GET para pedir una pieza de un recurso desde un servidor HTTP. Un mensaje  de solicitud GET tiene la siguiente sintaxis:
+
+	GET request-URI HTTP-version
+	(optional request headers)
+	(blank line)
+	(optional request body)
+
+* La palabra clave GET debe ir en Mayúsculas.
+* request-URI: especifica la ruta en donde se encuentra el recurso solicitado, el cual debe comenzar de la raíz "/" del directorio base del documento.
+* HTTP-version: Ambas, HTTP/1.0 o la HTTP/1.1. Este cliente nefocia el protocolo que se usara en la sesion. Por ejemplo, el cliente puede solicitar usar el HTTP/1.1. Si el servidor no soporta HTTP/1.1, debe informar al cliente que debe utilizar HTTP/1.0.
+* El cliente usa cabeceras de petición opcionales (tal como _Accept_, _Accept-Language_, etc.) para negociar con el servidor y pedir que envie el contenido. (ej., en el lenguaje que el cliente prefiera).
+* La Peticion GET tiene un cuerpo opcionar, el cual contiene una cadena de texto.
