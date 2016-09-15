@@ -664,3 +664,42 @@ Es importante tomar nota que si el cliente emite una solicitud GET a "/testdir",
 La mayoria de los navegadores seguiran con otra petición a "/testdir/". Por ejemplo, si escribimos _http://127.0.0.1:8000/testdir_ son el "/" de un navegador, nos daremos cuenta que un "/" fue agregado a la dirección en la respuesta dada. La moraleja de la historia es: debemos incluir el "/" para el directorio solicitado para ahorrarnos una peticion GET extra.
 
 
+### Emitir una solicitud GET a un Servidor Proxy
+
+Para enviar una solicitud GET a través de un servidor proxy, se debe establecer la conexión TCP al servidor y se debe extablecer una solicitud URI para localizar al servidor: _http://hostname:port/path/fileName_.
+
+El siguiente ejemplo fue usado en telnet. Una conexión es establecda con el servidor proxy y se emitio una solicitud GET.
+
+	GET **http://www.amazon.com/index.html** HTTP/1.1
+	Host: www.amazon.com
+	Connection: Close
+	(blank line)
+
+
+	HTTP/1.1 302 Found
+	Transfer-Encoding: chunked
+	Date: Fri, 27 Feb 2004 09:27:35 GMT
+	Content-Type: text/html; charset=iso-8859-1
+	Connection: close
+	Server: Stronghold/2.4.2 Apache/1.3.6 C2NetEU/2412 (Unix)
+	Set-Cookie: skin=; domain=.amazon.com; path=/; expires=Wed, 01-Aug-01 12:00:00 GMT
+	Connection: close
+	Location: http://www.amazon.com:80/exec/obidos/subst/home/home.html
+	Via: 1.1 xproxy (NetCache NetApp/5.3.1R4D5)
+
+	ed
+	<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+	<HTML><HEAD>
+	<TITLE>302 Found</TITLE>
+	</HEAD><BODY>
+	<H1>Found</H1>
+	The document has moved
+	<A HREF="http://www.amazon.com:80/exec/obidos/subst/home/home.html">
+	here</A>.<P>
+	</BODY></HTML>
+
+	0
+
+Notese que la respuesta fue regresada en "pedazos".
+
+
