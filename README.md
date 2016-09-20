@@ -801,4 +801,117 @@ El siguiente ejemplo muestra una petición TRACE usando un servidor proxy.
 
 	0
 
+### Submitting HTML Form Data and Query String
+
+En muchas aplicaciones de Internet, como "_e-commerce_" y "_search engine_", los clientes deben proporcionar información adicional a servidor (ej., nombre, dirección, palabras clave, etc). Basado en la información entregada, el servidor toma una acción apropiada y produce una respuesta personalizada.
+
+Los clientes normalente presentan la información en un formulario. Una vez este es llenado y clickeado el botón de enviar, el navegador empaqueta la información y la envia al servidor, utilizando ya sea GET o POST.
+
+El siguiente ejemlo muestra un formulario HTML, el cual es producido por el script HTML:
+
+	<html>
+	<head><title>A Sample HTML Form</title></head>
+	<body>
+	  <h2 align="left">A Sample HTML Data Entry Form</h2>
+	    <form method="get" action="/bin/process">
+	        Enter your name: <input type="text" name="username"><br />
+		Enter your password: <input type="password" name="password"><br />
+		Which year?
+		<input type="radio" name="year" value="2" />Yr 1
+		<input type="radio" name="year" value="2" />Yr 2
+	        <input type="radio" name="year" value="3" />Yr 3<br />
+		Subject registered:
+		<input type="checkbox" name="subject" value="e101" />E101
+		<input type="checkbox" name="subject" value="e102" />E102
+		<input type="checkbox" name="subject" value="e103" />E103<br />
+		Select Day:
+		<select name="day">
+			<option value="mon">Monday</option>
+			<option value="wed">Wednesday</option>
+			 <option value="fri">Friday</option>
+		</select><br />
+		<textarea rows="3" cols="30">Enter your special request here</textarea><br />
+		<input type="submit" value="SEND" />
+		<input type="reset" value="CLEAR" />
+		<input type="hidden" name="action" value="registration" />
+	    </form>
+	 </body>
+	 </html>
+
+
+![HTML SAMPLE DATA FORM](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTML_SampleForm.png)
+
+Una forma contiene "_campos_". Estos tipos de "_campos_" incluyen:
+
+* **Text Box**: producido por un <input type="text">.
+* **Password Box**: producido por un <input type="password">.
+* **Radio Button**: producido por un <input type="radio">.
+* **Checkbox**: producido por un <input type="checkbox">.
+* **Selection**: producido por <select> y <option>.
+* **Text Area**: producido por <textarea>.
+* **Submit Button**: producido por <input type="submit">.
+* **Reset Button**: producido por <input type="reset">.
+* **Hidden Field**: producido por <input type="hidden">.
+* **Button**: producido por <input type="button">.
+
+Cada campo tiene un _nombre_ y puede tomar un _valor_ específico. Una vez que el cliente llena los campos y da click al botón de enviar, el navegador toma ambos campos, y los empaqueta en pares "_name=value_", y concatena todos los campos utilizando un "_&_" como separador de campos. Esto es conocido como un "_query string_". Este enviará la cadena al servidor como parte de la petición.
+	**name1=value1&name2=value2&name3=value3&...**
+
+Los caracteres especiales no son permitidos dentro de la _query string_. Deben ser reemplazados por un "%" seguido del código **ASCII** en _hexadecimal_. Ej.,  "~" es reemplazado por "%7E", "#" por "%23" , etc. Desde que el espacio en blanco es muy común, puede ser reemplazado yasea por "%20" o "+". Este proceso de reemplazo es llamado "_URL-encoding_", y el resultado es un "_URL-encoded query string_". Por ejemplo, supongamos que tenemos 3 campos dentro de un formulario con _name/value_ de "name=Peter Lee", "address=#123 Happy Ave" y "language=C++", la _URL-encoded query string_ sería:
+
+	name=Peter+Lee&address=%23123+Happy+Ave&Language=C%2B%2B
+
+La _query string_ puede ser enviada al servidor utilizando GET o POST, las cuales estan espeficificadas en el atributo "_method_" de <form>.
+
+	<form method="get|post" action="url">
+
+Si utilizamos GET, la "_URL-encoded query string_" sera agregada antes de la _request-URL_ despues de un "?":
+
+	GET request-URI?query-string HTTP-version
+	(other optional request headers)
+	(blank line)
+	(optional request body)
+
+Usando GET para enviar la _query string_ tiene los siguients inconvenientes:
+
+* La cantidad de datos que podemos adjuntar antes de _request-URL_ es limitado. Si esta cantidad excete la permitida, el servidor regresara un error como  "414 Request URI too Large".
+
+* La _URL-encoded query string_ aparecerá en la caja de direcciones del navegador.
+
+El metodo POST vence estos inconvenientes. Si utilizamos POST, la _query string_ sera enviada en el cuerpo del mensaje, donde la cantidad de información no es limitada. Las cabeceras _Content-Type_ y _Content-Length_ son usadas para notificar al servidor el tipo y longitud de la _query string_. La _query string_ no aparecera en la caja de direcciones del navegador.
+
+##### Ejemplo
+
+El siguiente formulario HTML es usado para reunir el usuario y contraseña en un menú de login:
+
+	<html>
+	<head><title>Login</title></head>
+	<body>
+		<h2>LOGIN</h2>
+		<form method="get" action="/bin/login">
+			Username: <input type="text" name="user" size="25" /><br />
+			Password: <input type="password" name="pw" size="10" /><br /><br />
+			<input type="hidden" name="action" value="login" />
+			<input type="submit" value="SEND" />
+		</form>
+	</body>
+	</html>
+
+![Ejemplo LOGIN](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTML_LoginForm.png)
+
+El metodo GET es usado para enviar la _querry string_. Supongamos que el usuario ingresa "Peter Lee" como usuario y "123456" como contraseña y clickea el botón de enviar. La solicitud GET sería:
+
+	GET /bin/login?user=Peter+Lee&pw=123456&action=login HTTP/1.1
+	Accept: image/gif, image/jpeg, */*
+	Referer: http://127.0.0.1:8000/login.html
+	Accept-Language: en-us
+	Accept-Encoding: gzip, deflate
+	User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+	Host: 127.0.0.1:8000
+	Connection: Keep-Alive
+
+Nota que la contraseña que ingresamos no aparece en la pantalla, es posible verla en la caja de direcciones del navegador. Nunca debemos enviar una contraseña sin la encriptación apropiada.
+
+	http://127.0.0.1:8000/bin/login?user=Peter+Lee&pw=123456&action=login
+
 
