@@ -914,4 +914,40 @@ Nota que la contraseña que ingresamos no aparece en la pantalla, es posible ver
 
 	http://127.0.0.1:8000/bin/login?user=Peter+Lee&pw=123456&action=login
 
+### URL y URI
+
+##### URL (Uniform Resource Locator)
+
+Una URL definida en el RFL 2396, es utilizada para identificar un recuero en la web y tiene la siguiente sintaxis:
+
+	protocol://hostname:port/path-and-file-name
+
+Una URL tene 4 partes:
+
+1. Protocolo: el utilizado por el servidor
+2. Hostname: el nombre de dominio DNS de el servidor
+3. Puerto: El numero del puerto TCP que el servidor esta esperando
+4. Path-and-file-name: El nombre y localización del recurso solicitado
+
+Ejemplos de URL son:
+
+	ftp://www.ftp.org/docs/test.txt
+	mailto:user@test101.com
+	news:soc.culture.Singapore
+	telnet://www.nowhere123.com/
+
+##### Encoded URL
+
+La URL no puede contener caracteres especiales. Estos caracteres son codificados en la forma %xx, donde xx es el codigo ASCII Hexadecimal. La URL despues de ser codificada es llamada _encoded URL_.
+
+##### URI (Uniform Resource Identifier)
+
+La URI es mas general que la URL, la cual puede localizar un fragmento sin el recurso completo. La sintaxis que tiene es la siguiente:
+
+	http://host:port/path?request-parameters#nameAnchor
+
+* Los parametros solicitades son separados de la URL por un "?". Los demas valores son separados por un "&".
+
+* El _#nameAnchor_ identifica un fragmento sin necesitar el HTML completo, definido por el tag  <a name="anchorName">...</a>.
+
 
