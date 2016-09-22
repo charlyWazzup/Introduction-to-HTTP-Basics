@@ -1011,3 +1011,50 @@ El método POST tiene las siguientes ventajas comparado contra GET al enviar una
 
 Notemos que aunque la contraseña no es mostrada en el navegador, si es enviada al servidor en texto plano y vulnerable. Por lo tanto, enviar una contraseña enviando el método POST es absolutamente no seguro.
 
+### Carga de archivos usando _multipart/form-data_ POST
+
+La RFC 1867 especifica como un archivo puede ser cargando al servidor utilizando POST desde un formulario HTML. El atributo _type="file"_ es agregado a la etiqueta <input> tag de la etiqueta <form> para soportar la carga de archivos. El método POST para la carga de archivos no es una _URL-encoded_ pero utiliza el nuevl _MIME type_ llamado _multipart/form-data_.
+
+##### Ejemplo
+
+El siguiente formulario HTML puede ser usado para cargar archivos:
+
+	<html>
+	<head><title>File Upload</title></head>
+	<body>
+		<h2>Upload File</h2>
+		<form method="post" enctype="multipart/form-data" action="servlet/UploadServlet">
+		Who are you: <input type="text" name="username" /><br />
+		Choose the file to upload:
+		<input type="file" name="fileID" /><br />
+		<input type="submit" value="SEND" />
+		</form>
+	</body>
+	</html>
+![UPLOAD FILE IMAGE](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTML_FileUploadForm.png)
+
+Cuando el navegador encuentra la etiqueta <input> con el atributo _type="file"_, muestra una caja de texto y un boton para navegar dentro de una carpeta y encontrar el archivo que sera cargado.
+
+Cuando el usuario da click en el boton de enviar, el navegador envia el formulario y el contenido junto con el archivo. La codificación _"application/x-www-form-urlencoded"_ es neficiente para enviar datos binarios e información que no sean caracteres ASCII. Para esto se utiliza _"multipart/form-data"_ en su lugar.
+
+El archivo local original puede ser sustituido como un parametro "filename" o en la cabecera _"Content-Disposition: form-data"_.
+
+Un ejemplo de un mensaje POST para cargar un archivo es el siguiente:
+
+	POST /bin/upload HTTP/1.1
+	Host: test101
+	Accept: image/gif, image/jpeg, */*
+	Accept-Language: en-us
+	Content-Type: multipart/form-data; boundary=---------------------------7d41b838504d8
+	Accept-Encoding: gzip, deflate
+	User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+	Content-Length: 342
+	Connection: Keep-Alive
+	Cache-Control: no-cache
+
+	-----------------------------7d41b838504d8 Content-Disposition: form-data; name="username" 
+	Peter Lee
+	-----------------------------7d41b838504d8 Content-Disposition: form-data; name="fileID"; filename="C:\temp.html" Content-Type: text/plain 
+	<h1>Home page on main server</h1> 
+	-----------------------------7d41b838504d8--
+
