@@ -1153,4 +1153,85 @@ Las siguientes directivas de Apache son relevantas para la negociación de conte
 * La directiva por default DefaultType da un _MIME type_ de extensión desconocida:
 	DefaultType text/plain
 
+### Necogiación de Lenguaje  y Opciones de multivista
+
+La directiva "_Options Multiview_" es una manera simple de implementar la negociación del lenguaje. Por ejemplo:
+
+	AddLanguage en .en
+	<Directory "C:/_javabin/Apache1.3.29/htdocs">
+	    Options Indexes MultiViews
+	</Directory>
+
+Supongamos que el cliente solicita un "_index.html_"  y envia un _"Accept-Language: en-us"_. Si el servidor tiene un "_test.html_", "_test.html_" y un "_test.html.cm"_, basado en las preferencias del cliente, "_test.html_" sera regresado.
+
+	GET /index.html HTTP/1.1
+	Accept: */*
+	Accept-Language: en-us
+	Accept-Encoding: gzip, deflate
+	User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+	Host: test101:8080
+	Connection: Keep-Alive
+	(blank line)
+
+	HTTP/1.1 200 OK
+	Date: Sun, 29 Feb 2004 02:08:29 GMT
+	Server: Apache/1.3.29 (Win32)
+	Content-Location: index.html.en
+	Vary: negotiate
+	TCN: choice
+	Last-Modified: Sun, 29 Feb 2004 02:07:45 GMT
+	ETag: "0-13-40414971;40414964"
+	Accept-Ranges: bytes
+	Content-Length: 19
+	Keep-Alive: timeout=15, max=100
+	Connection: Keep-Alive
+	Content-Type: text/html
+	Content-Language: en
+	(blank line)
+	(body omitted)
+
+La directiva _AddLanguage_ es necesaria para asociar un código de lenguaje con una extensión de archivo, similar al mapeo _MIME type/file_.
+
+Notemos que la directiva "_Options All_" no incluse la opcion "_MultiViews_". Esto es, tenemos que especificarlo.
+
+La directiva _LanguagePriority_ puede ser usada para especificar el lenguaje de preferecia durante la negociación del contenido o si el cliente no expresa su preferencia, por ejemplo:
+
+	<IfModule mod_negotiation.c>
+	   LanguagePriority en da nl et fr de el it ja kr no pl pt pt-br
+	</IfModule>
+
+### Negociación de Caracteres
+
+El cliente puede usar la cabecera _Accept-Charset_ para negociar con el servidor los caracteres de su preferencia.
+
+	Accept-Charset: charset-1, charset-2, ...
+
+Los sets de caracteres mas comunes son: (Latin-I), ISO-8859-2, ISO-8859-5, BIG5 (Chinese Traditional), GB2312 (Chinese Simplified), UCS2 (2-byte Unicode), UCS4 (4-byte Unicode), UTF8 (Encoded Unicode), etc.
+
+De igual manera, la directiva _AddCharset_ es usada para asociar la extensión del archivo con un set de caracteres. Por ejemplo:
+
+	AddCharset ISO-8859-8   .iso8859-8
+	AddCharset ISO-2022-JP  .jis
+	AddCharset Big5         .Big5  .big5
+	AddCharset WINDOWS-1251 .cp-1251
+	AddCharset CP866        .cp866
+	AddCharset ISO-8859-5   .iso-ru
+	AddCharset KOI8-R       .koi8-r
+	AddCharset UCS-2        .ucs2
+	AddCharset UCS-4        .ucs4
+	AddCharset UTF-8        .utf8
+
+### Negociación de codificación
+
+El cliente puede usar la cabecera _Accept-Encoding_ para decirle al servidor el tipo de codificación que soporta. Los esquemas mas comúnes son: "x-gzip (.gz, .tgz)" and "x-compress (.Z)".
+
+	Accept-Encoding: encoding-method-1, encoding-method-2, ...
+
+De igual forma, la directiva _AddEncoding_ es usada para asociar la extensión del archivo con un esquema de codificación. Por ejemplo:
+
+	AddEncoding x-compress  .Z
+	AddEncoding x-gzip      .gz .tgz
+
+### Conexiónes persistentes (Keep-alive)
+
 
