@@ -1234,4 +1234,41 @@ De igual forma, la directiva _AddEncoding_ es usada para asociar la extensión d
 
 ### Conexiónes persistentes (Keep-alive)
 
+En HTTP/1.0 el servidor cierra por fedault la conexión TCP despues de enviar la respuesta. Esto es, cada conexión TCP sirve solo una vez. Esto no es eficiente ya que varias paginas HTML contienen _hyperlinks_ a otro recurso. Si descargamos una pagina que contenta 5 imagenes _inline_, el navegador tiene que establecer una conexión TCP 6 veces a el mismo servidor.
+
+El cliente puede negociar con el servidor y pedirle no cerrar la conexión despues de enviar la respuesta, de esta manera otra solicitud puede ser enviada en la misma conexión. Esto es conocido como _Conexión Persistente_. Esta conexión contiene la bastante eficiencia. La conexión por default de HTTP/1.0 no es persistente. Para pedir una conexión persistente el cliente debe incluir la en la cabecera _"Connection: Keep-alive"_.
+
+Para HTTP/1.1 por default la conexión es persistente. El cliente no tiene que enviar la cabecera "Connection: Keep-alive". En su lugar, el cliente debe recordar enviar la cabecera "Connection: Close".
+
+Las conexiones persistentes son muy útiles para páginas con imágenes _inline_, para que sean usadas en la misma conexión. Los beneficios de una conexión persistente son:
+
+* El tiempo de guardado de recursos en la apertura y cierre de la conexión TCP.
+* El cliente puede enviar varias solicitudes sin esperar por cada una de las respuestas, asi se usa la red mas eficientemente.
+* Respuestas más rápidas
+
+En un servidor Apache, las directivas de configuración son asociadas a conexiónes persistentes:
+
+* La directiva _KeepAlive_ decide si soportar o no conexiónes persistentes. Este toma los valores de _On_ y _Off_.
+
+	KeepAlive On|Off
+
+* La directiva _MaxKeepAliveRequests_ deciden el numero máximo de solicitudes que pueden ser enviadas en la conexión. Podemos poder en 0 para permitir ilimitado número de solicitudes. Es recomendado definir el número máximo para una mayor eficiencia de la red.
+	
+	MaxKeepAliveRequests 200
+
+* La directiva _KeepAliveTimeOut_ define el tiempo en segundos que se debe esperar para la siguiente solicitud.
+
+	KeepAliveTimeout 10
+
+### Rango de Descarga
+
+	Accept-Ranges: bytes
+	Transfer-Encoding: chunked
+
+### Control de Cache
+
+El cliente puede enviar la cabecera _"Cache-control: no-cache"_ para decirle al proxy para tomar una copia "_fresca_" del servidor original, aun y haya una copia en el cache. Desafortunadamente, los seridores HTTP/1.0 no entiende esta cabecera, pero utiliza una cabecera antigua: _"Pragma: no-cache"_. Podemos incluir ambas cabeceras en la solicitud.
+
+	Pragma: no-cache
+	Cache-Control: no-cache
 
