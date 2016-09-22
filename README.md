@@ -843,25 +843,26 @@ El siguiente ejemlo muestra un formulario HTML, el cual es producido por el scri
 
 Una forma contiene "_campos_". Estos tipos de "_campos_" incluyen:
 
-* **Text Box**: producido por un <input type="text">.
-* **Password Box**: producido por un <input type="password">.
-* **Radio Button**: producido por un <input type="radio">.
-* **Checkbox**: producido por un <input type="checkbox">.
-* **Selection**: producido por <select> y <option>.
-* **Text Area**: producido por <textarea>.
-* **Submit Button**: producido por <input type="submit">.
-* **Reset Button**: producido por <input type="reset">.
-* **Hidden Field**: producido por <input type="hidden">.
-* **Button**: producido por <input type="button">.
+* **Text Box**: producido por un input type="text".
+* **Password Box**: producido por un input type="password".
+* **Radio Button**: producido por un input type="radio".
+* **Checkbox**: producido por un input type="checkbox".
+* **Selection**: producido por select y option.
+* **Text Area**: producido por textarea.
+* **Submit Button**: producido por input type="submit".
+* **Reset Button**: producido por input type="reset".
+* **Hidden Field**: producido por input type="hidden".
+* **Button**: producido por input type="button".
 
 Cada campo tiene un _nombre_ y puede tomar un _valor_ específico. Una vez que el cliente llena los campos y da click al botón de enviar, el navegador toma ambos campos, y los empaqueta en pares "_name=value_", y concatena todos los campos utilizando un "_&_" como separador de campos. Esto es conocido como un "_query string_". Este enviará la cadena al servidor como parte de la petición.
+
 	**name1=value1&name2=value2&name3=value3&...**
 
 Los caracteres especiales no son permitidos dentro de la _query string_. Deben ser reemplazados por un "%" seguido del código **ASCII** en _hexadecimal_. Ej.,  "~" es reemplazado por "%7E", "#" por "%23" , etc. Desde que el espacio en blanco es muy común, puede ser reemplazado yasea por "%20" o "+". Este proceso de reemplazo es llamado "_URL-encoding_", y el resultado es un "_URL-encoded query string_". Por ejemplo, supongamos que tenemos 3 campos dentro de un formulario con _name/value_ de "name=Peter Lee", "address=#123 Happy Ave" y "language=C++", la _URL-encoded query string_ sería:
 
 	name=Peter+Lee&address=%23123+Happy+Ave&Language=C%2B%2B
 
-La _query string_ puede ser enviada al servidor utilizando GET o POST, las cuales estan espeficificadas en el atributo "_method_" de <form>.
+La _query string_ puede ser enviada al servidor utilizando GET o POST, las cuales estan espeficificadas en el atributo "_method_" de "form".
 
 	<form method="get|post" action="url">
 
@@ -948,7 +949,7 @@ La URI es mas general que la URL, la cual puede localizar un fragmento sin el re
 
 * Los parametros solicitades son separados de la URL por un "?". Los demas valores son separados por un "&".
 
-* El _#nameAnchor_ identifica un fragmento sin necesitar el HTML completo, definido por el tag  <a name="anchorName">...</a>.
+* El _#nameAnchor_ identifica un fragmento sin necesitar el HTML completo, definido por el tag  _<a name="anchorName">...</a>_.
 
 ### Método de solicitud POST
 
@@ -1013,7 +1014,7 @@ Notemos que aunque la contraseña no es mostrada en el navegador, si es enviada 
 
 ### Carga de archivos usando _multipart/form-data_ POST
 
-La RFC 1867 especifica como un archivo puede ser cargando al servidor utilizando POST desde un formulario HTML. El atributo _type="file"_ es agregado a la etiqueta <input> tag de la etiqueta <form> para soportar la carga de archivos. El método POST para la carga de archivos no es una _URL-encoded_ pero utiliza el nuevl _MIME type_ llamado _multipart/form-data_.
+La RFC 1867 especifica como un archivo puede ser cargando al servidor utilizando POST desde un formulario HTML. El atributo _type="file"_ es agregado a la etiqueta "input" tag de la etiqueta "form" para soportar la carga de archivos. El método POST para la carga de archivos no es una _URL-encoded_ pero utiliza el nuevl _MIME type_ llamado _multipart/form-data_.
 
 ##### Ejemplo
 
@@ -1033,7 +1034,7 @@ El siguiente formulario HTML puede ser usado para cargar archivos:
 	</html>
 ![UPLOAD FILE IMAGE](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTML_FileUploadForm.png)
 
-Cuando el navegador encuentra la etiqueta <input> con el atributo _type="file"_, muestra una caja de texto y un boton para navegar dentro de una carpeta y encontrar el archivo que sera cargado.
+Cuando el navegador encuentra la etiqueta "input" con el atributo _type="file"_, muestra una caja de texto y un boton para navegar dentro de una carpeta y encontrar el archivo que sera cargado.
 
 Cuando el usuario da click en el boton de enviar, el navegador envia el formulario y el contenido junto con el archivo. La codificación _"application/x-www-form-urlencoded"_ es neficiente para enviar datos binarios e información que no sean caracteres ASCII. Para esto se utiliza _"multipart/form-data"_ en su lugar.
 
