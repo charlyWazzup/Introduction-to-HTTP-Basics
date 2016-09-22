@@ -1058,3 +1058,99 @@ Un ejemplo de un mensaje POST para cargar un archivo es el siguiente:
 	<h1>Home page on main server</h1> 
 	-----------------------------7d41b838504d8--
 
+
+### Método de solicitud CONNECT
+
+La solicitud _HTTP CONNECT_ es usada para pedirle a un proxy hacer una conexión a otro host y simplemente liberar el contenido. Esto es muy usado para hacer conexiones a través de un proxy.
+
+### Otros métodos de solicitud
+
+* **PUT**: Le pide al servidor almacenar la información.
+* **DELETE**: Le pide al servidor eliminar la información.
+
+Por seguridad, _PUT_ y _DELETE_ no son soportados por la mayoria de los servidores en producción.
+
+Algúnos métodos de extensión pueden ser definidos para extender la funcionalidad del protocolo HTTP.
+
+### Negociación de Contenido
+
+Como se mencionó, HTTP soporta la negofiación de contenido entre el cliente y el servidor. Un cliente puede usar cabeceras de solicitud adicionales para decirle al servidor que puede ser soportado o que contenido prefiere. Si el servidor posee múltiples versiones del mismo documento en diferentes formatos, regresara el que el cliente necesite.
+
+### Negociación _Content-Type_
+
+El serivdor utiliza una configuración de archivo MIME (llamada _'conf\mime.types"_ para mapear la extensión a un _media type_, para asi poder buscar por extensión de archivo. Por ejemplo, las extensiónes _".html"_ , _"htm"_ son asociadas con el _MIME media type "text/html"_; las extensiónes _".jpg", "jpeg"_ son asociadas con _"image/jpeg"_. Cuando un archivo es regresado al cliente, el servidor tiene que ponen una cabecera de respuesta _Content-Type_ para informarle al cliente el tipo de información.
+
+Supongamos que el cliente solicita un archivo llamado "logo" sin especificar el tipo de archivo y envia una cabecera como _"Accept: image/gif, image/jpeg,..."_. Si el servidor tiene 2 formatos de archivos como _"logo": "logo.gif"_ y _"logo.jpg"_,  y la configuración del _MIME_ tiene las siguientes entradas:
+	image/gif        gif
+	image/jpeg       jpeg jpg jpe
+
+El servidor regresara _"logo.gif"_ al cliente, basandose el la cabecera _Accept_ y el _MIME type/file_. El servidor incluira una cabecera _"Content-type: image/gif"_ en su respuesta:
+
+	GET /logo HTTP/1.1
+	Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg,
+	  application/x-shockwave-flash, application/vnd.ms-excel, 
+	  application/vnd.ms-powerpoint, application/msword, */*
+	Accept-Language: en-us
+	Accept-Encoding: gzip, deflate
+	User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+	Host: test101:8080
+	Connection: Keep-Alive
+	(blank line)
+
+	HTTP/1.1 200 OK
+	Date: Sun, 29 Feb 2004 01:42:22 GMT
+	Server: Apache/1.3.29 (Win32)
+	Content-Location: logo.gif
+	Vary: negotiate,accept
+	TCN: choice
+	Last-Modified: Wed, 21 Feb 1996 19:45:52 GMT
+	ETag: "0-916-312b7670;404142de"
+	Accept-Ranges: bytes
+	Content-Length: 2326
+	Keep-Alive: timeout=15, max=100
+	Connection: Keep-Alive
+	Content-Type: image/gif
+	(blank line)
+	(body omitted)
+
+Sin embargo, si el servidor tiene 3 archivos _"logo.*"_, _"logo.gif"_, _"logo.html"_, _"logo.jgp"_ y usamos _"Accept: */*"_ , pasará lo siguiente:
+
+	GET /logo HTTP/1.1
+	Accept: */*
+	Accept-Language: en-us
+	Accept-Encoding: gzip, deflate
+	User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+	Host: test101:8080
+	Connection: Keep-Alive
+	(blank line)
+
+	HTTP/1.1 200 OK
+	Date: Sun, 29 Feb 2004 01:48:16 GMT
+	Server: Apache/1.3.29 (Win32)
+	Content-Location: logo.html
+	Vary: negotiate,accept
+	TCN: choice
+	Last-Modified: Fri, 20 Feb 2004 04:31:17 GMT
+	ETag: "0-10-40358d95;404144c1"
+	Accept-Ranges: bytes
+	Content-Length: 16
+	Keep-Alive: timeout=15, max=100
+	Connection: Keep-Alive
+	Content-Type: text/html
+	(blank line)
+	(body omitted)
+
+	Accept: */*
+
+Las siguientes directivas de Apache son relevantas para la negociación de contenido:
+
+* La directiva _TypeConfig_ puede ser usada para especificar la localización del mapeo del _MIME_:
+	TypeConfig conf/mime.types
+
+* La directiva _AddType_ puede ser usada para incluír un _MIME type_ adicional en la configuracón del archivo:
+	AddType mime-type extension1 [extension2]
+
+* La directiva por default DefaultType da un _MIME type_ de extensión desconocida:
+	DefaultType text/plain
+
+
