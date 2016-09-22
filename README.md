@@ -950,4 +950,64 @@ La URI es mas general que la URL, la cual puede localizar un fragmento sin el re
 
 * El _#nameAnchor_ identifica un fragmento sin necesitar el HTML completo, definido por el tag  <a name="anchorName">...</a>.
 
+### Método de solicitud POST
+
+Este es utlizado para agregar información adicional al servidor. Emitiendo una URL HTML desde el navegador siempre activara una solicitud GET. Para activar una solicitud POST, podemos utilizar un formulario HTML con el atributo method="post" o escribir nuestro propio programa de red. Para enviar un formulario HTML, POST se utiliza  al igual que GET exceptuando la _URL-encoded query string_, esta es enviada en el cuerpo del mensaje.
+
+POST toma la siguiente sintaxis:
+
+	POST request-URI HTTP-version
+	Content-Type: mime-type
+	Content-Length: number-of-bytes
+	(other optional request headers)
+	  
+	(URL-encoded query string)
+
+Las cabeceras "_Content-Type and Content-Length_" son necesarias en POST para informar al servidor el tipo de archivos y la longuitud del cuerpo del mensaje.
+
+
+##### Ejemplo: Formulario para enviar información utilizando el metodo POST
+
+
+	<html>
+	<head><title>Login</title></head>
+	<body>
+		  <h2>LOGIN</h2>
+		  <form method="post" action="/bin/login">
+		  	Username: <input type="text" name="user" size="25" /><br />
+			  Password: <input type="password" name="pw" size="10" /><br /><br />
+			  <input type="hidden" name="action" value="login" />
+			  <input type="submit" value="SEND" />
+		  </form>
+	</body>
+	</html>
+
+
+Supongamos que escribimos "Peter Lee" como username y "123456" como contraseña y damos click en el botón de enviar. El navegador generara el siguiente POST:
+
+	POST /bin/login HTTP/1.1
+	Host: 127.0.0.1:8000
+	Accept: image/gif, image/jpeg, */*
+	Referer: http://127.0.0.1:8000/login.html
+	Accept-Language: en-us
+	Content-Type: application/x-www-form-urlencoded
+	Accept-Encoding: gzip, deflate
+	User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+	Content-Length: 37
+	Connection: Keep-Alive
+	Cache-Control: no-cache
+	   
+	**User=Peter+Lee&pw=123456&action=login** 
+
+Notemos que la cabecera Content-Type le informa al servidor que la información es una URL-encoded y la cabecera Content-Length le dice al servidor cuantos bytes leer del cuerpo del mensaje.
+
+##### Formulario POST vs GET
+
+El método POST tiene las siguientes ventajas comparado contra GET al enviar una _query string_:
+
+* La cantidad de información es ilimitada, siempre y cuando vayan en el cuerpo del mensaje, el cual es enviado comunmente al servidor de forma separada.
+
+* La _query string_ no es mostrada en la caja del navegador
+
+Notemos que aunque la contraseña no es mostrada en el navegador, si es enviada al servidor en texto plano y vulnerable. Por lo tanto, enviar una contraseña enviando el método POST es absolutamente no seguro.
 
